@@ -1,0 +1,20 @@
+{
+  "name": "notebooku-functions",
+  "description": "Firebase Functions API for Notebooku note sync.",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "lint": "node --check index.js",
+    "serve": "firebase emulators:start --only functions,firestore",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^5.1.1"
+  }
+}
