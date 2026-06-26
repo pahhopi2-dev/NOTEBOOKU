@@ -1,4 +1,4 @@
-package com.notebooku.app
+package com.khofif.notebooku
 
 import io.flutter.embedding.android.FlutterActivity
 

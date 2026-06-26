@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.khofif.notebooku"
+    namespace = "com.notebooku.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.khofif.notebooku"
+        applicationId = "com.notebooku.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
