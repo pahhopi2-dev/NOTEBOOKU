@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesService {
@@ -8,7 +9,13 @@ class PreferencesService {
   static SharedPreferences? _prefs;
 
   static Future<void> init() async {
-    _prefs ??= await SharedPreferences.getInstance();
+    try {
+      _prefs ??= await SharedPreferences.getInstance();
+    } catch (error, stackTrace) {
+      debugPrint('Preferences init failed: $error');
+      debugPrint('$stackTrace');
+      _prefs = null;
+    }
   }
 
   static bool get splashSeen => _prefs?.getBool(_splashSeenKey) ?? false;

@@ -11,8 +11,18 @@ import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await HiveService.bootstrap();
-  await PreferencesService.init();
+
+  try {
+    await HiveService.bootstrap();
+  } catch (error) {
+    debugPrint('Main bootstrap failed: $error');
+  }
+
+  try {
+    await PreferencesService.init();
+  } catch (error) {
+    debugPrint('Main preferences init failed: $error');
+  }
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

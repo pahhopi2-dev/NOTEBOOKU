@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/note.dart';
@@ -6,12 +7,42 @@ class HiveService {
   static const String _notesBox = 'notes';
 
   static Future<void> bootstrap() async {
-    await Hive.initFlutter();
-    if (!Hive.isAdapterRegistered(NoteAdapter().typeId)) {
-      Hive.registerAdapter(NoteAdapter());
+    try {
+      await Hive.initFlutter();
+      if (!Hive.isAdapterRegistered(NoteAdapter().typeId)) {
+        Hive.registerAdapter(NoteAdapter());
+      }
+      if (!Hive.isBoxOpen(_notesBox)) {
+        await Hive.openBox<Note>(_notesBox);
+      }
+    } catch (error, stackTrace) {
+      debugPrint('Hive bootstrap failed: $error');
+      debugPrint('$stackTrace');
+      await _recoverFromCorruptBox();
     }
-    if (!Hive.isBoxOpen(_notesBox)) {
-      await Hive.openBox<Note>(_notesBox);
+  }
+
+  static Future<void> _recoverFromCorruptBox() async {
+    try {
+      if (Hive.isBoxOpen(_notesBox)) {
+        await Hive.box<Note>(_notesBox).close();
+      }
+      await Hive.deleteBoxFromDisk(_notesBox);
+    } catch (error) {
+      debugPrint('Hive cleanup failed: $error');
+    }
+
+    try {
+      await Hive.initFlutter();
+      if (!Hive.isAdapterRegistered(NoteAdapter().typeId)) {
+        Hive.registerAdapter(NoteAdapter());
+      }
+      if (!Hive.isBoxOpen(_notesBox)) {
+        await Hive.openBox<Note>(_notesBox);
+      }
+    } catch (error, stackTrace) {
+      debugPrint('Hive recovery failed: $error');
+      debugPrint('$stackTrace');
     }
   }
 
